@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>뽀로로 4조 애아빠가 되다, 그래서 떠난다 🐧</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky:#4FC3E8;
+    --sky-deep:#2FA8D6;
+    --ice:#EAF6FB;
+    --snow:#FFFFFF;
+    --sun:#FFD447;
+    --cherry:#FF6B6B;
+    --navy:#1B3A57;
+    --navy-soft:#4A6B85;
+    --radius:22px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Gowun Dodum', sans-serif;
+    color:var(--navy);
+    background:var(--ice);
+    line-height:1.6;
+  }
+  h1,h2,h3,.eyebrow{font-family:'Jua', sans-serif;}
+
+  /* ---------- 눈 내리는 배경 ---------- */
+  .snow{
+    position:fixed;
+    top:-10px; left:0;
+    width:100%; height:100%;
+    pointer-events:none;
+    z-index:0;
+    overflow:hidden;
+  }
+  .flake{
+    position:absolute;
+    top:-5%;
+    color:#fff;
+    opacity:.85;
+    animation:fall linear infinite;
+    user-select:none;
+  }
+  @keyframes fall{
+    to{ transform:translateY(110vh) translateX(var(--drift,0px)); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .flake{ animation:none; display:none; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    z-index:1;
+    background:linear-gradient(180deg, var(--sky) 0%, var(--sky-deep) 55%, var(--ice) 100%);
+    color:#fff;
+    padding:72px 20px 110px;
+    text-align:center;
+    overflow:hidden;
+  }
+  .hero .badge{
+    display:inline-block;
+    background:var(--sun);
+    color:var(--navy);
+    font-family:'Jua', sans-serif;
+    padding:8px 20px;
+    border-radius:999px;
+    font-size:.95rem;
+    margin-bottom:18px;
+    box-shadow:0 4px 0 rgba(0,0,0,.08);
+  }
+  .hero h1{
+    font-size:clamp(2.1rem, 6vw, 3.4rem);
+    margin:0 0 12px;
+    text-shadow:0 3px 0 rgba(0,0,0,.08);
+  }
+  .hero p.sub{
+    font-size:1.15rem;
+    margin:0 auto;
+    max-width:520px;
+    opacity:.95;
+  }
+  .mascot-wrap{
+    margin-top:30px;
+    display:flex;
+    justify-content:center;
+  }
+  .mascot{
+    width:150px;
+    height:auto;
+    filter:drop-shadow(0 8px 10px rgba(27,58,87,.18));
+    animation:bob 3s ease-in-out infinite;
+  }
+  @keyframes bob{
+    0%,100%{ transform:translateY(0) rotate(-2deg); }
+    50%{ transform:translateY(-8px) rotate(2deg); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .mascot{ animation:none; }
+  }
+  .wave{
+    position:absolute;
+    bottom:-2px; left:0; width:100%;
+    line-height:0;
+  }
+  .wave svg{ width:100%; height:70px; display:block; }
+
+  /* ---------- 섹션 공통 ---------- */
+  section{
+    position:relative;
+    z-index:1;
+    max-width:760px;
+    margin:0 auto;
+    padding:50px 20px;
+  }
+  .eyebrow{
+    display:inline-block;
+    color:var(--sky-deep);
+    background:var(--snow);
+    border:2px solid var(--sky);
+    padding:5px 16px;
+    border-radius:999px;
+    font-size:.9rem;
+    margin-bottom:10px;
+  }
+  h2{
+    font-size:1.7rem;
+    margin:0 0 22px;
+    color:var(--navy);
+  }
+  .card{
+    background:var(--snow);
+    border-radius:var(--radius);
+    padding:26px 24px;
+    box-shadow:0 6px 0 rgba(47,168,214,.15), 0 10px 24px rgba(27,58,87,.06);
+    border:3px solid var(--sky);
+  }
+
+  /* ---------- 장소 ---------- */
+  .place-name{
+    font-family:'Jua', sans-serif;
+    font-size:1.3rem;
+    color:var(--sky-deep);
+    margin:0 0 6px;
+  }
+  .place-addr{
+    margin:0 0 16px;
+    color:var(--navy-soft);
+  }
+  .map-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--cherry);
+    color:#fff;
+    text-decoration:none;
+    font-family:'Jua', sans-serif;
+    padding:12px 22px;
+    border-radius:999px;
+    box-shadow:0 4px 0 #d24d4d;
+    transition:transform .15s ease;
+  }
+  .map-btn:hover{ transform:translateY(-2px); }
+  .map-btn:active{ transform:translateY(1px); box-shadow:0 2px 0 #d24d4d; }
+
+  /* ---------- 타임라인 (눈 발자국 길) ---------- */
+  .timeline{
+    list-style:none;
+    margin:0; padding:0;
+    position:relative;
+  }
+  .timeline::before{
+    content:"";
+    position:absolute;
+    left:27px; top:6px; bottom:6px;
+    width:4px;
+    background:repeating-linear-gradient(
+      to bottom, var(--sky) 0 8px, transparent 8px 16px
+    );
+    border-radius:4px;
+  }
+  .timeline li{
+    position:relative;
+    padding:0 0 26px 66px;
+  }
+  .timeline li:last-child{ padding-bottom:0; }
+  .timeline .dot{
+    position:absolute;
+    left:0; top:0;
+    width:56px; height:56px;
+    background:var(--snow);
+    border:3px solid var(--sky);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.4rem;
+  }
+  .timeline .time{
+    font-family:'Jua', sans-serif;
+    color:var(--sky-deep);
+    font-size:.95rem;
+    display:block;
+    margin-bottom:2px;
+  }
+  .timeline .desc{
+    font-size:1.02rem;
+    color:var(--navy);
+  }
+  .day-heading{
+    font-family:'Jua', sans-serif;
+    color:var(--sun-text, var(--navy));
+    background:var(--sun);
+    display:inline-block;
+    padding:6px 18px;
+    border-radius:999px;
+    margin:34px 0 18px;
+    font-size:1.05rem;
+  }
+  .day-heading:first-of-type{ margin-top:6px; }
+
+  /* ---------- 인원 ---------- */
+  .people-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:16px;
+    text-align:center;
+  }
+  .people-box{
+    background:var(--ice);
+    border-radius:18px;
+    padding:22px 10px;
+  }
+  .people-box .num{
+    font-family:'Jua', sans-serif;
+    font-size:2rem;
+    color:var(--sky-deep);
+    display:block;
+  }
+  .people-box .lbl{
+    color:var(--navy-soft);
+    font-size:.95rem;
+  }
+  .total-line{
+    text-align:center;
+    margin-top:18px;
+    font-family:'Jua', sans-serif;
+    font-size:1.15rem;
+    color:var(--navy);
+  }
+
+  /* ---------- 준비물 ---------- */
+  .pack-list{
+    list-style:none;
+    margin:0; padding:0;
+    display:grid;
+    gap:12px;
+  }
+  .pack-list li{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:var(--ice);
+    border-radius:14px;
+    padding:14px 16px;
+    font-size:1.02rem;
+  }
+  .pack-list li .ico{ font-size:1.3rem; }
+
+  /* ---------- 카운트다운 ---------- */
+  .countdown-card{ text-align:center; }
+  .countdown-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:10px;
+  }
+  .cd-box{
+    background:var(--sky);
+    color:#fff;
+    border-radius:16px;
+    padding:16px 4px;
+    box-shadow:0 4px 0 var(--sky-deep);
+  }
+  .cd-num{
+    display:block;
+    font-family:'Jua', sans-serif;
+    font-size:clamp(1.5rem, 6vw, 2.2rem);
+    line-height:1.1;
+  }
+  .cd-lbl{
+    font-size:.85rem;
+    opacity:.9;
+  }
+  .cd-caption{
+    margin:16px 0 0;
+    color:var(--navy-soft);
+    font-size:.92rem;
+  }
+  #countdown.arrived .cd-box{ background:var(--cherry); box-shadow:0 4px 0 #d24d4d; }
+
+  /* ---------- 날씨 ---------- */
+  .weather-status{
+    text-align:center;
+    color:var(--navy-soft);
+    margin:0;
+  }
+  .weather-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  .weather-now{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    padding-bottom:10px;
+    margin-bottom:6px;
+    border-bottom:2px dashed var(--sky);
+  }
+  .weather-now .w-icon{ font-size:2.6rem; }
+  .weather-now .w-temp{
+    font-family:'Jua', sans-serif;
+    font-size:2rem;
+    color:var(--navy);
+  }
+  .weather-now .w-desc{
+    color:var(--navy-soft);
+    font-size:.95rem;
+  }
+  .weather-days{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .w-day{
+    background:var(--ice);
+    border-radius:16px;
+    padding:16px 10px;
+    text-align:center;
+  }
+  .w-day .w-day-label{
+    font-family:'Jua', sans-serif;
+    color:var(--sky-deep);
+    font-size:.95rem;
+    margin-bottom:6px;
+    display:block;
+  }
+  .w-day .w-day-icon{ font-size:1.9rem; display:block; margin-bottom:4px; }
+  .w-day .w-range{ font-size:.95rem; color:var(--navy); }
+  .w-day .w-rain{ font-size:.85rem; color:var(--sky-deep); margin-top:4px; }
+  .weather-note{
+    text-align:center;
+    font-size:.82rem;
+    color:var(--navy-soft);
+    margin-top:4px;
+  }
+
+  /* ---------- FAQ ---------- */
+  .faq-list{
+    display:grid;
+    gap:12px;
+  }
+  .faq-item{
+    background:var(--snow);
+    border:2px solid var(--sky);
+    border-radius:16px;
+    padding:14px 18px;
+  }
+  .faq-item summary{
+    font-family:'Jua', sans-serif;
+    color:var(--navy);
+    cursor:pointer;
+    list-style:none;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    position:relative;
+    padding-right:28px;
+  }
+  .faq-item summary::-webkit-details-marker{ display:none; }
+  .faq-item summary::after{
+    content:"▾";
+    position:absolute;
+    right:0;
+    color:var(--sky-deep);
+    transition:transform .2s ease;
+  }
+  .faq-item[open] summary::after{ transform:rotate(180deg); }
+  .faq-item p{
+    margin:12px 0 0;
+    color:var(--navy-soft);
+    font-size:.98rem;
+  }
+  .faq-tbd{
+    font-family:'Gowun Dodum', sans-serif;
+    font-size:.72rem;
+    background:var(--sun);
+    color:var(--navy);
+    padding:2px 8px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+
+  /* ---------- 숙소 상세정보 ---------- */
+  .unit-exterior{
+    margin-bottom:20px;
+    border-radius:var(--radius);
+    overflow:hidden;
+    border:3px solid var(--sky);
+    box-shadow:0 6px 0 rgba(47,168,214,.15), 0 10px 24px rgba(27,58,87,.06);
+    background:var(--snow);
+  }
+  .unit-exterior img{
+    width:100%;
+    display:block;
+    aspect-ratio:16/9;
+    object-fit:cover;
+  }
+  .unit-exterior-caption{
+    margin:0;
+    padding:12px 18px;
+    text-align:center;
+    color:var(--navy-soft);
+    font-size:.92rem;
+  }
+  .unit-block{
+    background:var(--snow);
+    border:3px solid var(--sky);
+    border-radius:var(--radius);
+    padding:20px;
+    margin-bottom:18px;
+    box-shadow:0 6px 0 rgba(47,168,214,.15), 0 10px 24px rgba(27,58,87,.06);
+  }
+  .unit-block:last-child{ margin-bottom:0; }
+  .unit-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .unit-badge{
+    font-family:'Jua', sans-serif;
+    background:var(--sun);
+    color:var(--navy);
+    padding:4px 14px;
+    border-radius:999px;
+    font-size:.95rem;
+  }
+  .unit-name{
+    font-family:'Jua', sans-serif;
+    color:var(--navy);
+    font-size:1.1rem;
+  }
+  .unit-gallery{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  .unit-photo{
+    aspect-ratio:4/3;
+    border-radius:14px;
+    overflow:hidden;
+  }
+  .unit-photo img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .unit-photo.placeholder{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--ice);
+    border:2px dashed var(--sky);
+    color:var(--navy-soft);
+    font-size:.9rem;
+    text-align:center;
+    padding:10px;
+  }
+  @media (max-width:420px){
+    .unit-gallery{ grid-template-columns:1fr; }
+  }
+
+  footer{
+    text-align:center;
+    padding:40px 20px 60px;
+    color:var(--navy-soft);
+    font-size:.9rem;
+    position:relative;
+    z-index:1;
+  }
+  footer .foot-penguin{ font-size:1.6rem; display:block; margin-bottom:8px; }
+
+  @media (max-width:480px){
+    .people-grid{ grid-template-columns:1fr 1fr; }
+    .hero{ padding:56px 16px 90px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="snow" id="snow"></div>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="badge">🐧 우리들의 여름 여행</span>
+  <h1>뽀로로 4조<br>애아빠가 되다,<br>그래서 떠난다</h1>
+  <p class="sub">2026. 7. 18(토) – 7. 19(일)<br>친구네 가족들과 함께하는 1박 2일 물놀이 캠프!</p>
+  <div class="mascot-wrap">
+    <svg class="mascot" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+      <!-- 그림자 -->
+      <ellipse cx="100" cy="208" rx="46" ry="9" fill="rgba(27,58,87,0.12)"/>
+      <!-- 몸통 -->
+      <path d="M100 60 C 145 60 168 105 165 150 C 163 185 135 205 100 205 C 65 205 37 185 35 150 C 32 105 55 60 100 60 Z" fill="#2FA8D6"/>
+      <!-- 배 -->
+      <path d="M100 88 C 128 88 145 118 143 150 C 141 175 122 190 100 190 C 78 190 59 175 57 150 C 55 118 72 88 100 88 Z" fill="#FFFFFF"/>
+      <!-- 왼쪽 날개 (인사) -->
+      <path d="M52 118 C 34 108 18 84 22 66 C 24 58 34 58 38 66 C 46 84 58 102 66 116 Z" fill="#2FA8D6"/>
+      <!-- 오른쪽 날개 -->
+      <path d="M148 120 C 168 128 180 150 174 168 C 171 176 161 175 157 167 C 148 150 140 134 134 122 Z" fill="#2FA8D6"/>
+      <!-- 비행모자 -->
+      <path d="M55 78 C 55 40 145 40 145 78 C 145 95 133 100 122 96 C 122 96 122 96 122 96 L78 96 C 67 100 55 95 55 78 Z" fill="#FFD447"/>
+      <path d="M40 70 C 30 70 24 82 30 92 C 34 99 45 100 50 92 L50 74 Z" fill="#FFD447"/>
+      <path d="M160 70 C 170 70 176 82 170 92 C 166 99 155 100 150 92 L150 74 Z" fill="#FFD447"/>
+      <!-- 고글 -->
+      <circle cx="78" cy="98" r="24" fill="#fff" stroke="#FF6B6B" stroke-width="7"/>
+      <circle cx="122" cy="98" r="24" fill="#fff" stroke="#FF6B6B" stroke-width="7"/>
+      <rect x="96" y="92" width="12" height="10" rx="4" fill="#FFD447"/>
+      <!-- 눈 (웃는 표정) -->
+      <path d="M68 96 Q78 86 88 96" stroke="#1B3A57" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M112 96 Q122 86 132 96" stroke="#1B3A57" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <!-- 부리 -->
+      <path d="M92 118 C 92 108 108 108 108 118 C 108 128 100 134 100 134 C 100 134 92 128 92 118 Z" fill="#FFA23C"/>
+      <!-- 발 -->
+      <ellipse cx="80" cy="204" rx="14" ry="7" fill="#FFA23C"/>
+      <ellipse cx="120" cy="204" rx="14" ry="7" fill="#FFA23C"/>
+    </svg>
+  </div>
+  <div class="wave">
+    <svg viewBox="0 0 500 70" preserveAspectRatio="none"><path d="M0,40 C150,90 350,0 500,40 L500,70 L0,70 Z" fill="#EAF6FB"/></svg>
+  </div>
+</div>
+
+<!-- 카운트다운 -->
+<section id="countdown">
+  <span class="eyebrow">⏳ 얼마나 남았나요</span>
+  <h2>출발까지</h2>
+  <div class="card countdown-card">
+    <div class="countdown-grid" id="countdownGrid">
+      <div class="cd-box"><span class="cd-num" id="cd-days">--</span><span class="cd-lbl">일</span></div>
+      <div class="cd-box"><span class="cd-num" id="cd-hours">--</span><span class="cd-lbl">시간</span></div>
+      <div class="cd-box"><span class="cd-num" id="cd-mins">--</span><span class="cd-lbl">분</span></div>
+      <div class="cd-box"><span class="cd-num" id="cd-secs">--</span><span class="cd-lbl">초</span></div>
+    </div>
+    <p class="cd-caption" id="cdCaption">입실 시각 7/18(토) 15:00 기준</p>
+  </div>
+</section>
+
+<!-- 장소 -->
+<section id="place">
+  <span class="eyebrow">📍 어디로 가나요</span>
+  <h2>여행지</h2>
+  <div class="card">
+    <p class="place-name">스페인마을 라스 블랑카스 펜션</p>
+    <p class="place-addr">경기 가평군 청평면 남이터길 54-12</p>
+    <a class="map-btn" href="https://m.place.naver.com/accommodation/778663274/home?entry=pll&abtExp=NEW-PLACE-SEARCH%3A6&bk_query=%EB%9D%BC%EC%8A%A4%EB%B8%94%EB%9E%91%EC%B9%B4%EC%8A%A4%20%ED%8E%9C%EC%85%98&businessCategory=pension" target="_blank" rel="noopener">
+      🗺️ 네이버 지도에서 보기
+    </a>
+  </div>
+</section>
+
+<!-- 숙소 상세정보 -->
+<section id="unit-detail">
+  <span class="eyebrow">🏠 어디서 머무나요</span>
+  <h2>독채 D · C4 / C5 / C6</h2>
+
+  <div class="unit-exterior">
+    <img src="images/exterior.jpg" alt="독채 D 전경 (C4, C5, C6)">
+    <p class="unit-exterior-caption">독채 D 전경 · 왼쪽부터 C6(2층) · C5(1층) · C4(1층)</p>
+  </div>
+
+  <div class="unit-block">
+    <div class="unit-head">
+      <span class="unit-badge">C4</span>
+      <span class="unit-name">C4호</span>
+    </div>
+    <div class="unit-gallery" data-unit="C4">
+      <div class="unit-photo placeholder">📷 사진 추가 예정</div>
+      <div class="unit-photo placeholder">📷 사진 추가 예정</div>
+    </div>
+  </div>
+
+  <div class="unit-block">
+    <div class="unit-head">
+      <span class="unit-badge">C5</span>
+      <span class="unit-name">C5호</span>
+    </div>
+    <div class="unit-gallery" data-unit="C5">
+      <div class="unit-photo placeholder">📷 사진 추가 예정</div>
+      <div class="unit-photo placeholder">📷 사진 추가 예정</div>
+    </div>
+  </div>
+
+  <div class="unit-block">
+    <div class="unit-head">
+      <span class="unit-badge">C6</span>
+      <span class="unit-name">C6호</span>
+    </div>
+    <div class="unit-gallery" data-unit="C6">
+      <div class="unit-photo placeholder">📷 사진 추가 예정</div>
+      <div class="unit-photo placeholder">📷 사진 추가 예정</div>
+    </div>
+  </div>
+</section>
+
+<!-- 날씨 -->
+<section id="weather">
+  <span class="eyebrow">☀️ 날씨는 어떨까요</span>
+  <h2>가평 청평 날씨</h2>
+  <div class="card">
+    <div class="weather-grid" id="weatherGrid">
+      <p class="weather-status" id="weatherStatus">날씨 불러오는 중... 🐧</p>
+    </div>
+  </div>
+</section>
+
+<!-- 일정 -->
+<section id="schedule">
+  <span class="eyebrow">🗓️ 무엇을 하나요</span>
+  <h2>일정 안내</h2>
+
+  <div class="day-heading">DAY 1 · 7월 18일 토요일</div>
+  <ul class="timeline">
+    <li><span class="dot">🛒</span><span class="time">12:00</span><span class="desc">장보기 (월계 이마트) · 담당: 정국 / 윤쑤네</span></li>
+    <li><span class="dot">🚗</span><span class="time">15:00</span><span class="desc">펜션 입실</span></li>
+    <li><span class="dot">🏊</span><span class="time">16:00 – 17:50</span><span class="desc">실내수영 (시레나 풀)</span></li>
+    <li><span class="dot">🍖</span><span class="time">18:00 – 20:00</span><span class="desc">저녁 식사</span></li>
+    <li><span class="dot">🧸</span><span class="time">20:00 – 22:00</span><span class="desc">정리 및 아이들 취침</span></li>
+    <li><span class="dot">🍻</span><span class="time">22:00 –</span><span class="desc">어른들 2차 타임</span></li>
+  </ul>
+
+  <div class="day-heading">DAY 2 · 7월 19일 일요일</div>
+  <ul class="timeline">
+    <li><span class="dot">⏰</span><span class="time">07:00 – 08:00</span><span class="desc">기상</span></li>
+    <li><span class="dot">🍳</span><span class="time">08:00 – 09:00</span><span class="desc">아침 식사</span></li>
+    <li><span class="dot">🧹</span><span class="time">09:00 – 11:00</span><span class="desc">정리 및 체크아웃</span></li>
+    <li><span class="dot">🍜</span><span class="time">12:00 –</span><span class="desc">점심 식사 및 해산</span></li>
+  </ul>
+</section>
+
+<!-- 인원 -->
+<section id="people">
+  <span class="eyebrow">👨‍👩‍👧‍👦 누구랑 가나요</span>
+  <h2>참가 인원</h2>
+  <div class="card">
+    <div class="people-grid">
+      <div class="people-box"><span class="num">10</span><span class="lbl">어른</span></div>
+      <div class="people-box"><span class="num">7</span><span class="lbl">아이</span></div>
+    </div>
+    <div class="total-line">총 17명이 함께해요 🐧</div>
+  </div>
+</section>
+
+<!-- 준비물 -->
+<section id="packing">
+  <span class="eyebrow">🎒 뭘 챙기나요</span>
+  <h2>준비물</h2>
+  <ul class="pack-list">
+    <li><span class="ico">🧴</span> 개인용품 (세면도구, 갈아입을 옷 등)</li>
+    <li><span class="ico">👶</span> 아기용품 (기저귀, 분유, 유아용 식기 등)</li>
+    <li><span class="ico">🏖️</span> 물놀이 용품 (수영복, 튜브, 물안경 등)</li>
+  </ul>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <span class="eyebrow">❓ 궁금한 점이 있나요</span>
+  <h2>자주 묻는 질문</h2>
+  <div class="faq-list">
+    <details class="faq-item" open>
+      <summary>수영장은 언제 이용하나요?</summary>
+      <p>7/18(토) 16:00~17:50에 실내수영장(시레나 풀)을 이용해요. 아이들 물놀이 용품(튜브, 물안경 등)은 각자 챙겨주세요.</p>
+    </details>
+    <details class="faq-item">
+      <summary>장은 언제, 어디서 보나요?</summary>
+      <p>7/18(토) 12:00에 월계 이마트에서 장을 봐요. 담당은 정국 / 윤쑤네예요.</p>
+    </details>
+    <details class="faq-item">
+      <summary>아이들은 언제 재우나요?</summary>
+      <p>저녁식사(18:00~20:00) 후 20:00~22:00에 정리하면서 아이들 취침을 진행할 예정이에요.</p>
+    </details>
+    <details class="faq-item">
+      <summary>체크아웃은 몇 시인가요?</summary>
+      <p>7/19(일) 09:00~11:00에 정리 및 체크아웃해요. 이후 12:00에 점심 식사 및 해산이 예정되어 있어요.</p>
+    </details>
+    <details class="faq-item">
+      <summary>주차는 몇 대까지 가능한가요?</summary>
+      <p>넉넉한 규모로 무료 주차 가능해요.</p>
+    </details>
+    <details class="faq-item">
+      <summary>와이파이가 되나요?</summary>
+      <p>전 객실 무료 와이파이가 제공돼요.</p>
+    </details>
+    <details class="faq-item">
+      <summary>무인마트가 있나요?</summary>
+      <p>24시간 운영되는 무인마트에서 음료, 식품, 위생용품, 여행용품, 바베큐 소모품 등을 구매할 수 있어요. (주류는 판매하지 않아요)</p>
+    </details>
+    <details class="faq-item">
+      <summary>바베큐는 언제, 어떻게 하나요?</summary>
+      <p>이용시간은 15:00~22:00이고 우천시에도 사용 가능해요. 숯불 세팅을 하면 바베큐에 필요한 기본 장비를 모두 제공해줘요.</p>
+    </details>
+    <details class="faq-item">
+      <summary>시레나 풀 이용 시 주의할 점은요?</summary>
+      <p>탈의실과 온수 샤워실이 완비되어 있어요. 12세 이하 어린이는 보호자와 함께 입수해야 하고 구명조끼 착용이 필수예요. 튜브와 아동 구명조끼는 소량 무료로 제공돼요.</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <span class="foot-penguin">🐧❄️🐧</span>
+  다 같이 즐거운 여름 추억 만들어요!
+</footer>
+
+<script>
+  // 눈송이 배경 애니메이션
+  (function(){
+    var container = document.getElementById('snow');
+    var flakes = ['❄','❅','❆','•'];
+    var count = window.innerWidth < 600 ? 22 : 40;
+    for(var i=0;i<count;i++){
+      var el = document.createElement('span');
+      el.className = 'flake';
+      el.textContent = flakes[Math.floor(Math.random()*flakes.length)];
+      var size = 10 + Math.random()*16;
+      el.style.left = Math.random()*100 + '%';
+      el.style.fontSize = size + 'px';
+      el.style.setProperty('--drift', (Math.random()*80-40) + 'px');
+      var dur = 8 + Math.random()*10;
+      el.style.animationDuration = dur + 's';
+      el.style.animationDelay = (Math.random()*dur) + 's';
+      el.style.opacity = 0.4 + Math.random()*0.5;
+      container.appendChild(el);
+    }
+  })();
+
+  // 카운트다운 타이머 (7/18 15:00 KST 입실 기준)
+  (function(){
+    var target = new Date("2026-07-18T15:00:00+09:00").getTime();
+    var elDays = document.getElementById('cd-days');
+    var elHours = document.getElementById('cd-hours');
+    var elMins = document.getElementById('cd-mins');
+    var elSecs = document.getElementById('cd-secs');
+    var caption = document.getElementById('cdCaption');
+    var section = document.getElementById('countdown');
+
+    function pad(n){ return String(n).padStart(2,'0'); }
+
+    function tick(){
+      var now = Date.now();
+      var diff = target - now;
+      if(diff <= 0){
+        elDays.textContent = '00';
+        elHours.textContent = '00';
+        elMins.textContent = '00';
+        elSecs.textContent = '00';
+        caption.textContent = '출발일이에요! 즐거운 여행 되세요 🐧🎉';
+        section.classList.add('arrived');
+        return;
+      }
+      var d = Math.floor(diff / 86400000);
+      var h = Math.floor((diff % 86400000) / 3600000);
+      var m = Math.floor((diff % 3600000) / 60000);
+      var s = Math.floor((diff % 60000) / 1000);
+      elDays.textContent = pad(d);
+      elHours.textContent = pad(h);
+      elMins.textContent = pad(m);
+      elSecs.textContent = pad(s);
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+
+  // 날씨 위젯 (Open-Meteo, 경기 가평 청평면 기준 좌표)
+  (function(){
+    var LAT = 37.7186, LON = 127.4351;
+    var statusEl = document.getElementById('weatherStatus');
+    var gridEl = document.getElementById('weatherGrid');
+
+    var weatherIcon = {
+      0:'☀️',1:'🌤️',2:'⛅',3:'☁️',
+      45:'🌫️',48:'🌫️',
+      51:'🌦️',53:'🌦️',55:'🌦️',
+      61:'🌧️',63:'🌧️',65:'🌧️',
+      66:'🌧️',67:'🌧️',
+      71:'🌨️',73:'🌨️',75:'🌨️',77:'🌨️',
+      80:'🌦️',81:'🌧️',82:'⛈️',
+      85:'🌨️',86:'🌨️',
+      95:'⛈️',96:'⛈️',99:'⛈️'
+    };
+    var weatherDesc = {
+      0:'맑음',1:'대체로 맑음',2:'구름 조금',3:'흐림',
+      45:'안개',48:'안개',
+      51:'약한 이슬비',53:'이슬비',55:'강한 이슬비',
+      61:'약한 비',63:'비',65:'강한 비',
+      66:'약한 어는비',67:'어는비',
+      71:'약한 눈',73:'눈',75:'강한 눈',77:'싸락눈',
+      80:'약한 소나기',81:'소나기',82:'강한 소나기',
+      85:'약한 소낙눈',86:'소낙눈',
+      95:'뇌우',96:'뇌우(우박)',99:'뇌우(강한 우박)'
+    };
+
+    function fmtRange(min, max){
+      return Math.round(min) + '° / ' + Math.round(max) + '°';
+    }
+
+    var url = 'https://api.open-meteo.com/v1/forecast?latitude=' + LAT +
+      '&longitude=' + LON +
+      '&current=temperature_2m,weather_code' +
+      '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max' +
+      '&timezone=Asia%2FSeoul&forecast_days=16';
+
+    fetch(url)
+      .then(function(res){ if(!res.ok) throw new Error('weather fetch failed'); return res.json(); })
+      .then(function(data){
+        var html = '';
+
+        if(data.current){
+          var cCode = data.current.weather_code;
+          html += '<div class="weather-now">' +
+            '<span class="w-icon">' + (weatherIcon[cCode] || '🌡️') + '</span>' +
+            '<div><span class="w-temp">' + Math.round(data.current.temperature_2m) + '°C</span>' +
+            '<div class="w-desc">지금, ' + (weatherDesc[cCode] || '') + '</div></div>' +
+            '</div>';
+        }
+
+        var days = data.daily && data.daily.time ? data.daily.time : [];
+        var targets = ['2026-07-18','2026-07-19'];
+        var labels = {'2026-07-18':'7/18 (토)','2026-07-19':'7/19 (일)'};
+        var found = false;
+        html += '<div class="weather-days">';
+        targets.forEach(function(dateStr){
+          var idx = days.indexOf(dateStr);
+          if(idx === -1){
+            html += '<div class="w-day"><span class="w-day-label">' + labels[dateStr] + '</span>' +
+              '<span class="w-day-icon">❓</span><span class="w-range">예보 범위 밖</span></div>';
+            return;
+          }
+          found = true;
+          var code = data.daily.weather_code[idx];
+          var tmax = data.daily.temperature_2m_max[idx];
+          var tmin = data.daily.temperature_2m_min[idx];
+          var pop = data.daily.precipitation_probability_max[idx];
+          html += '<div class="w-day">' +
+            '<span class="w-day-label">' + labels[dateStr] + '</span>' +
+            '<span class="w-day-icon">' + (weatherIcon[code] || '🌡️') + '</span>' +
+            '<span class="w-range">' + fmtRange(tmin, tmax) + '</span>' +
+            '<div class="w-rain">☔ 강수확률 ' + Math.round(pop) + '%</div>' +
+            '</div>';
+        });
+        html += '</div>';
+        html += '<p class="weather-note">청평면 인근 기준 예보 · 실시간 업데이트</p>';
+
+        statusEl.remove();
+        gridEl.innerHTML = html;
+      })
+      .catch(function(){
+        statusEl.textContent = '날씨 정보를 불러오지 못했어요. 잠시 후 다시 확인해주세요 🐧';
+      });
+  })();
+</script>
+
+</body>
+</html>
