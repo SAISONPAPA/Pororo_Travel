@@ -430,6 +430,32 @@
     color:var(--navy-soft);
     font-size:.92rem;
   }
+  .unit-note{
+    background:var(--ice);
+    border-radius:16px;
+    padding:16px 18px;
+    margin-bottom:18px;
+  }
+  .unit-note p{
+    margin:0 0 10px;
+    color:var(--navy-soft);
+    font-size:.95rem;
+  }
+  .unit-note p:last-child{ margin-bottom:0; }
+  .unit-info{
+    list-style:none;
+    margin:0 0 14px;
+    padding:0;
+    display:grid;
+    gap:8px;
+  }
+  .unit-info li{
+    background:var(--ice);
+    border-radius:10px;
+    padding:8px 12px;
+    font-size:.92rem;
+    color:var(--navy);
+  }
   .unit-block{
     background:var(--snow);
     border:3px solid var(--sky);
@@ -586,11 +612,22 @@
     <p class="unit-exterior-caption">독채 D 전경 · 왼쪽부터 C6(2층) · C5(1층) · C4(1층)</p>
   </div>
 
+  <div class="unit-note">
+    <p>단체·소규모 모임에 적합한 독채 건물로, 3개 객실이 한 동에 모여있어요. 객실마다 TV·OTT 셋톱박스·냉장고·에어컨·전자레인지·인덕션·그릇/컵/취사도구·수건·치약·샴푸·바디샴푸가 기본으로 비치되어 있어요. 밥솥과 가스버너는 체크인센터에서 무료로 빌릴 수 있어요.</p>
+    <p>12명까지는 C6 대형 바베큐장에서 다같이 바베큐를 즐길 수 있고, 인원이 더 많으면 온풍기가 설치된 20인 규모 바베큐장도 이용 가능해요. 엘그릴이라는 실내 식당에서는 항아리 BBQ 같은 특별 메뉴도 판매해요.</p>
+  </div>
+
   <div class="unit-block">
     <div class="unit-head">
       <span class="unit-badge">C4</span>
-      <span class="unit-name">C4호</span>
+      <span class="unit-name">C4호 · 1층</span>
     </div>
+    <ul class="unit-info">
+      <li>🛏️ 침실 더블베드 1</li>
+      <li>🚿 화장실 1</li>
+      <li>🍳 거실 겸 주방</li>
+      <li>🔥 바베큐장</li>
+    </ul>
     <div class="unit-gallery" data-unit="C4">
       <div class="unit-photo placeholder">📷 사진 추가 예정</div>
       <div class="unit-photo placeholder">📷 사진 추가 예정</div>
@@ -600,8 +637,15 @@
   <div class="unit-block">
     <div class="unit-head">
       <span class="unit-badge">C5</span>
-      <span class="unit-name">C5호</span>
+      <span class="unit-name">C5호 · 1층</span>
     </div>
+    <ul class="unit-info">
+      <li>🛏️ 침실 더블베드 1</li>
+      <li>🧺 온돌방 1 (이불세트)</li>
+      <li>🚿 화장실 2</li>
+      <li>🍳 거실 겸 주방</li>
+      <li>🔥 바베큐장</li>
+    </ul>
     <div class="unit-gallery" data-unit="C5">
       <div class="unit-photo placeholder">📷 사진 추가 예정</div>
       <div class="unit-photo placeholder">📷 사진 추가 예정</div>
@@ -611,14 +655,22 @@
   <div class="unit-block">
     <div class="unit-head">
       <span class="unit-badge">C6</span>
-      <span class="unit-name">C6호</span>
+      <span class="unit-name">C6호 · 2층</span>
     </div>
+    <ul class="unit-info">
+      <li>🛏️ 침실 더블베드 1</li>
+      <li>🧺 온돌방 1 (이불세트)</li>
+      <li>🚿 화장실 2</li>
+      <li>🍳 거실 겸 주방</li>
+      <li>🔥 대형 바베큐장 (12인 규모)</li>
+    </ul>
     <div class="unit-gallery" data-unit="C6">
       <div class="unit-photo placeholder">📷 사진 추가 예정</div>
       <div class="unit-photo placeholder">📷 사진 추가 예정</div>
     </div>
   </div>
 </section>
+
 
 <!-- 날씨 -->
 <section id="weather">
